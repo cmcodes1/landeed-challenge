@@ -4,6 +4,15 @@ import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationStack from './src/navigation/NavigationStack';
+import firebaseConfig from './src/config/firebaseConfig';
+import {initializeApp} from 'firebase/app';
+import {getDatabase, ref} from 'firebase/database';
+
+const app = initializeApp(firebaseConfig);
+
+const database = getDatabase(app);
+
+export const userDetailsRef = ref(database, 'userDetails/');
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
