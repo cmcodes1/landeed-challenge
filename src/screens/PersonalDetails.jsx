@@ -4,7 +4,7 @@ import {onValue, ref} from 'firebase/database';
 import {database} from '../../App';
 import {styles} from '../styles/styles';
 
-export default function PersonalDetails({navigation}) {
+export default function PersonalDetails({navigation, route}) {
   const [userPersonalData, setUserPersonalData] = useState({});
 
   const getUserPersonalData = () => {
@@ -27,9 +27,22 @@ export default function PersonalDetails({navigation}) {
     setUserPersonalData(userPersonalDataCopy);
   };
 
+  const resetUserPersonalData = () => {
+    const userPersonalDataCopy = {...userPersonalData};
+    for (const key in userPersonalDataCopy) {
+      userPersonalDataCopy[key].value = '';
+    }
+    setUserPersonalData(userPersonalDataCopy);
+  };
+
   useEffect(() => {
     getUserPersonalData();
   }, []);
+
+  useEffect(() => {
+    route.params?.resetData && resetUserPersonalData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params?.resetData]);
 
   return (
     <View style={styles.root}>
