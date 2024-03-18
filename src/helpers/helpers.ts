@@ -38,7 +38,7 @@ const updateUserPersonalData = (
   setUserPersonalData: SetState,
 ) => {
   const userPersonalDataCopy = {...userPersonalData};
-  userPersonalDataCopy[field].value = text;
+  userPersonalDataCopy[field].value = field === 'age' ? Number(text) : text;
   setUserPersonalData(userPersonalDataCopy);
 };
 
