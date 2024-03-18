@@ -1,9 +1,10 @@
-import {View, Text, TextInput, Button} from 'react-native';
+import {View, Text, TextInput, Button, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {onValue, ref} from 'firebase/database';
 import {database} from '../../App';
 import {styles} from '../styles/styles';
 import RadioButton from '../components/RadioButton/RadioButton';
+import {isInputInvalid} from '../helpers/helpers';
 
 export default function PersonalDetails({navigation, route}) {
   const [userPersonalData, setUserPersonalData] = useState({});
@@ -36,6 +37,25 @@ export default function PersonalDetails({navigation, route}) {
     setUserPersonalData(userPersonalDataCopy);
   };
 
+  const goToNextPage = () => {
+    let allFieldsValid = true;
+
+    for (const key in userPersonalData) {
+      if (
+        !userPersonalData[key].value ||
+        isInputInvalid(userPersonalData[key])
+      ) {
+        allFieldsValid = false;
+      }
+    }
+
+    allFieldsValid
+      ? navigation.navigate('ProfessionalDetails', {
+          userPersonalData: userPersonalData,
+        })
+      : Alert.alert('Please check if the inputs you have entered are valid!');
+  };
+
   useEffect(() => {
     getUserPersonalData();
   }, []);
@@ -62,19 +82,16 @@ export default function PersonalDetails({navigation, route}) {
             <TextInput
               value={item[1].value.toString()}
               onChangeText={text => updateUserPersonalData(item[0], text)}
-              style={[styles.textInput]}
+              style={[
+                styles.textInput,
+                isInputInvalid(item[1]) && styles.textInputError,
+              ]}
+              keyboardType={item[0] === 'age' ? 'numeric' : 'default'}
             />
           )}
         </View>
       ))}
-      <Button
-        title="Next Page"
-        onPress={() =>
-          navigation.navigate('ProfessionalDetails', {
-            userPersonalData: userPersonalData,
-          })
-        }
-      />
+      <Button title="Next Page" onPress={goToNextPage} />
     </View>
   );
 }

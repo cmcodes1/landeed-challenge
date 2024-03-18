@@ -93,7 +93,6 @@ export default function ProfessionalDetails({navigation, route}) {
           )}
         </View>
       ))}
-
       <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
