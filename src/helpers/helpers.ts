@@ -25,7 +25,6 @@ const getUserPersonalData = (setUserPersonalData: SetState) => {
 
   onValue(userPersonalDetailsRef, snapshot => {
     if (snapshot.exists()) {
-      console.log('personalDetails', snapshot.val());
       setUserPersonalData(snapshot.val());
     }
   });
@@ -83,7 +82,6 @@ const getUserProfessionalData = (setUserProfessionalData: SetState) => {
 
   onValue(userProfessionalDetailsRef, snapshot => {
     if (snapshot.exists()) {
-      console.log('professionalDetails', snapshot.val());
       setUserProfessionalData(snapshot.val());
     }
   });
