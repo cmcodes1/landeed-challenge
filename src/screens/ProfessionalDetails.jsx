@@ -26,7 +26,7 @@ export default function ProfessionalDetails({navigation, route}) {
 
     onValue(formTimeoutRef, snapshot => {
       if (snapshot.exists()) {
-        startTimer(snapshot.val() * 1000);
+        startTimer(snapshot.val() * 60 * 1000);
       }
     });
   }, [startTimer]);
