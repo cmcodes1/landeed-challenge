@@ -1,13 +1,11 @@
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import {styles} from './styles';
-import {Option, Options, OnPress} from './types';
+import {RadioButtonProps, Option} from './types';
 
-export default function RadioButton(props: {
-  options: Options;
-  value: Option;
-  onPress: OnPress;
-}): React.JSX.Element {
+export default function RadioButton(
+  props: RadioButtonProps,
+): React.JSX.Element {
   const {options, value, onPress} = props;
 
   const [isOtherSelected, setIsOtherSelected] = useState(false);

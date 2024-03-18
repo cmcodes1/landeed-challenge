@@ -13,4 +13,10 @@ type Options = Option[];
 
 type OnPress = (item: Option) => {};
 
-export type {Option, Options, OnPress};
+type RadioButtonProps = {
+  options: Options;
+  value: Option;
+  onPress: OnPress;
+};
+
+export type {RadioButtonProps, Option, Options, OnPress};

@@ -2,25 +2,18 @@ import {View, Text, TextInput, Button} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {database} from '../../App';
 import {styles} from '../styles/styles';
-import {onValue, ref, set} from 'firebase/database';
+import {onValue, ref} from 'firebase/database';
 import RadioButton from '../components/RadioButton/RadioButton';
+import {
+  getUserProfessionalData,
+  handleSubmit,
+  isInputInvalid,
+  resetUserProfessionalData,
+  updateUserProfessionalData,
+} from '../helpers/helpers';
 
 export default function ProfessionalDetails({navigation, route}) {
   const [userProfessionalData, setUserProfessionalData] = useState({});
-
-  const getUserProfessionalData = () => {
-    const userProfessionalDetailsRef = ref(
-      database,
-      'userDetails/professionalDetails/',
-    );
-
-    onValue(userProfessionalDetailsRef, snapshot => {
-      if (snapshot.exists()) {
-        console.log('professionalDetails', snapshot.val());
-        setUserProfessionalData(snapshot.val());
-      }
-    });
-  };
 
   const getFormTimeout = useCallback(() => {
     const formTimeoutRef = ref(database, 'formTimeout/');
@@ -35,7 +28,10 @@ export default function ProfessionalDetails({navigation, route}) {
   const startTimer = useCallback(
     formTimeout => {
       setTimeout(() => {
-        resetUserProfessionalData();
+        resetUserProfessionalData(
+          userProfessionalData,
+          setUserProfessionalData,
+        );
         navigation.navigate('PersonalDetails', {resetData: true});
       }, formTimeout);
     },
@@ -43,31 +39,8 @@ export default function ProfessionalDetails({navigation, route}) {
     [navigation],
   );
 
-  const updateUserProfessionalData = (field, text) => {
-    const userProfessionalDataCopy = {...userProfessionalData};
-    userProfessionalDataCopy[field].value = text;
-    setUserProfessionalData(userProfessionalDataCopy);
-  };
-
-  const resetUserProfessionalData = () => {
-    const userProfessionalDataCopy = {...userProfessionalData};
-    for (const key in userProfessionalDataCopy) {
-      userProfessionalDataCopy[key].value = '';
-    }
-    setUserProfessionalData(userProfessionalDataCopy);
-  };
-
-  const handleSubmit = () => {
-    const personalDetails = route.params.userPersonalData;
-    const professionalDetails = userProfessionalData;
-    const userDetails = {personalDetails, professionalDetails};
-
-    const userDetailsRef = ref(database, 'userDetails/');
-    set(userDetailsRef, userDetails);
-  };
-
   useEffect(() => {
-    getUserProfessionalData();
+    getUserProfessionalData(setUserProfessionalData);
     getFormTimeout();
   }, [getFormTimeout]);
 
@@ -81,19 +54,41 @@ export default function ProfessionalDetails({navigation, route}) {
               options={['Owner', 'Agent', 'Buyer', 'Seller', 'Other']}
               value={item[1].value}
               onPress={optionSelected =>
-                updateUserProfessionalData(item[0], optionSelected)
+                updateUserProfessionalData(
+                  item[0],
+                  optionSelected,
+                  userProfessionalData,
+                  setUserProfessionalData,
+                )
               }
             />
           ) : (
             <TextInput
               value={item[1].value.toString()}
-              onChangeText={text => updateUserProfessionalData(item[0], text)}
-              style={styles.textInput}
+              onChangeText={text =>
+                updateUserProfessionalData(
+                  item[0],
+                  text,
+                  userProfessionalData,
+                  setUserProfessionalData,
+                )
+              }
+              style={[
+                styles.textInput,
+                item[0] === 'profession' &&
+                  isInputInvalid(item[1]) &&
+                  styles.textInputError,
+              ]}
             />
           )}
         </View>
       ))}
-      <Button title="Submit" onPress={handleSubmit} />
+      <Button
+        title="Submit"
+        onPress={() =>
+          handleSubmit(route.params.userPersonalData, userProfessionalData)
+        }
+      />
     </View>
   );
 }
