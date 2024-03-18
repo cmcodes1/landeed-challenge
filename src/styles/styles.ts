@@ -6,8 +6,8 @@ export const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 10,
   },
   label: {
     width: '25%',
@@ -15,7 +15,6 @@ export const styles = StyleSheet.create({
   textInput: {
     height: 40,
     width: '65%',
-    margin: 10,
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,

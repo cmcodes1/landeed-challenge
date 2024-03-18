@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {onValue, ref} from 'firebase/database';
 import {database} from '../../App';
 import {styles} from '../styles/styles';
+import RadioButton from '../components/RadioButton/RadioButton';
 
 export default function PersonalDetails({navigation, route}) {
   const [userPersonalData, setUserPersonalData] = useState({});
@@ -49,11 +50,21 @@ export default function PersonalDetails({navigation, route}) {
       {Object.entries(userPersonalData).map(item => (
         <View key={item[0]} style={styles.row}>
           <Text style={styles.label}>{item[0]}</Text>
-          <TextInput
-            value={item[1].value.toString()}
-            onChangeText={text => updateUserPersonalData(item[0], text)}
-            style={[styles.textInput]}
-          />
+          {item[1].inputType === 'RadioButton' && item[0] === 'gender' ? (
+            <RadioButton
+              options={['M', 'F', 'Nonbinary']}
+              value={item[1].value}
+              onPress={optionSelected =>
+                updateUserPersonalData(item[0], optionSelected)
+              }
+            />
+          ) : (
+            <TextInput
+              value={item[1].value.toString()}
+              onChangeText={text => updateUserPersonalData(item[0], text)}
+              style={[styles.textInput]}
+            />
+          )}
         </View>
       ))}
       <Button
