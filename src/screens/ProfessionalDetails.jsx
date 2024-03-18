@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Button} from 'react-native';
+import {View, Text, TextInput, Button, ActivityIndicator} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {database} from '../../App';
 import {styles} from '../styles/styles';
@@ -46,49 +46,56 @@ export default function ProfessionalDetails({navigation, route}) {
 
   return (
     <View style={styles.root}>
-      {Object.entries(userProfessionalData).map(item => (
-        <View key={item[0]} style={styles.row}>
-          <Text style={styles.label}>{item[0]}</Text>
-          {item[1].inputType === 'RadioButton' && item[0] === 'profession' ? (
-            <RadioButton
-              options={['Owner', 'Agent', 'Buyer', 'Seller', 'Other']}
-              value={item[1].value}
-              onPress={optionSelected =>
-                updateUserProfessionalData(
-                  item[0],
-                  optionSelected,
-                  userProfessionalData,
-                  setUserProfessionalData,
-                )
-              }
-            />
-          ) : (
-            <TextInput
-              value={item[1].value.toString()}
-              onChangeText={text =>
-                updateUserProfessionalData(
-                  item[0],
-                  text,
-                  userProfessionalData,
-                  setUserProfessionalData,
-                )
-              }
-              style={[
-                styles.textInput,
-                item[0] === 'profession' &&
-                  isInputInvalid(item[1]) &&
-                  styles.textInputError,
-              ]}
-            />
-          )}
-        </View>
-      ))}
-      <Button
-        title="Submit"
-        onPress={() =>
-          handleSubmit(route.params.userPersonalData, userProfessionalData)
-        }
-      />
+      {Object.keys(userProfessionalData).length === 0 ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <>
+          {Object.entries(userProfessionalData).map(item => (
+            <View key={item[0]} style={styles.row}>
+              <Text style={styles.label}>{item[0]}</Text>
+              {item[1].inputType === 'RadioButton' &&
+              item[0] === 'profession' ? (
+                <RadioButton
+                  options={['Owner', 'Agent', 'Buyer', 'Seller', 'Other']}
+                  value={item[1].value}
+                  onPress={optionSelected =>
+                    updateUserProfessionalData(
+                      item[0],
+                      optionSelected,
+                      userProfessionalData,
+                      setUserProfessionalData,
+                    )
+                  }
+                />
+              ) : (
+                <TextInput
+                  value={item[1].value.toString()}
+                  onChangeText={text =>
+                    updateUserProfessionalData(
+                      item[0],
+                      text,
+                      userProfessionalData,
+                      setUserProfessionalData,
+                    )
+                  }
+                  style={[
+                    styles.textInput,
+                    item[0] === 'profession' &&
+                      isInputInvalid(item[1]) &&
+                      styles.textInputError,
+                  ]}
+                />
+              )}
+            </View>
+          ))}
+          <Button
+            title="Submit"
+            onPress={() =>
+              handleSubmit(route.params.userPersonalData, userProfessionalData)
+            }
+          />
+        </>
+      )}
     </View>
   );
 }
