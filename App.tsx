@@ -1,6 +1,5 @@
 import React from 'react';
 import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
-
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationStack from './src/navigation/NavigationStack';
@@ -12,7 +11,7 @@ const app = initializeApp(firebaseConfig);
 
 export const database = getDatabase(app);
 
-function App(): React.JSX.Element {
+export default function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -32,5 +31,3 @@ function App(): React.JSX.Element {
     </SafeAreaView>
   );
 }
-
-export default App;

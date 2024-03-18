@@ -5,7 +5,7 @@ import ProfessionalDetails from '../screens/ProfessionalDetails';
 
 const Stack = createNativeStackNavigator();
 
-export default function NavigationStack() {
+export default function NavigationStack(): React.JSX.Element {
   return (
     <Stack.Navigator
       initialRouteName="PersonalDetails"

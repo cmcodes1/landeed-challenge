@@ -19,4 +19,4 @@ type RadioButtonProps = {
   onPress: OnPress;
 };
 
-export type {RadioButtonProps, Option, Options, OnPress};
+export type {RadioButtonProps, Option};

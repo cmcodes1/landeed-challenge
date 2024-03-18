@@ -115,8 +115,6 @@ const handleSubmit = (
   personalDetails: UserPersonalData,
   professionalDetails: UserProfessionalData,
 ) => {
-  //   const personalDetails = route.params.userPersonalData;
-  //   const professionalDetails = userProfessionalData;
   const userDetails = {personalDetails, professionalDetails};
   const userDetailsRef = ref(database, 'userDetails/');
 
