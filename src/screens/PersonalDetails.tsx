@@ -8,8 +8,13 @@ import {
   updateUserPersonalData,
 } from '../helpers/helpers';
 import Input from '../components/Input/Input';
+import {InputField, UserPersonalDataInputFields} from '../helpers/types';
+import {PersonalDetailsProps} from './types';
 
-export default function PersonalDetails({navigation, route}) {
+export default function PersonalDetails({
+  navigation,
+  route,
+}: PersonalDetailsProps): React.JSX.Element {
   const [userPersonalData, setUserPersonalData] = useState({});
 
   useEffect(() => {
@@ -17,7 +22,7 @@ export default function PersonalDetails({navigation, route}) {
   }, []);
 
   useEffect(() => {
-    route.params?.resetData &&
+    route?.params?.resetData &&
       resetUserPersonalData(userPersonalData, setUserPersonalData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route.params?.resetData]);
@@ -32,11 +37,11 @@ export default function PersonalDetails({navigation, route}) {
             <View key={item[0]} style={styles.row}>
               <Text style={styles.label}>{item[0]}</Text>
               <Input
-                inputFieldName={item[0]}
-                inputField={item[1]}
+                inputFieldName={item[0] as UserPersonalDataInputFields}
+                inputField={item[1] as InputField}
                 onPress={text =>
                   updateUserPersonalData(
-                    item[0],
+                    item[0] as UserPersonalDataInputFields,
                     text,
                     userPersonalData,
                     setUserPersonalData,

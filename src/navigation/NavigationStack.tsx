@@ -2,8 +2,9 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import PersonalDetails from '../screens/PersonalDetails';
 import ProfessionalDetails from '../screens/ProfessionalDetails';
+import {RootStackParamList} from './types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function NavigationStack(): React.JSX.Element {
   return (

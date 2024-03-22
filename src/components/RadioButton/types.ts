@@ -11,7 +11,7 @@ type Option =
 
 type Options = Option[];
 
-type OnPress = (item: Option) => {};
+type OnPress = (item: Option) => void;
 
 type RadioButtonProps = {
   options: Options;
