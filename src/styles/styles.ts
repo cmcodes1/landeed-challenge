@@ -12,14 +12,4 @@ export const styles = StyleSheet.create({
   label: {
     width: '25%',
   },
-  textInput: {
-    height: 40,
-    width: '75%',
-    borderWidth: 1,
-    borderRadius: 10,
-    padding: 10,
-  },
-  textInputError: {
-    borderColor: 'red',
-  },
 });
